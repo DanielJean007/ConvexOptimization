@@ -17,7 +17,7 @@ function GradDescFixed_t(fx)
 %% - Gradient Descent Fixed t
     tol = 0.1;
     maxiter = 100000;    
-    t = 0.00015;
+    t = 0.0002;
     g = inf;
     niter = 0;
     x = x0;
@@ -26,11 +26,8 @@ function GradDescFixed_t(fx)
     % gradient descent algorithm:
     while(norm(g) >= tol & niter <= maxiter)
         g = -vpa(subs(grad,[x1,x2],x));
-%         norm(g)
-        % take step:
         steps = [steps;x];
         x = x + t*g;
-        % update termination metrics
         niter = niter + 1;
     end 
     
@@ -40,16 +37,12 @@ function GradDescFixed_t(fx)
     a = a(1:7); b = b(1:7);
     niter = niter - 1;
 %% - Plotting graph
-%     [hor,ver] = meshgrid(-(2+round(max(abs(xopt)))):.1:2+round(max(abs(xopt))));
     hold on;
     lowVal = -(2+str2num(char(round(max(abs(xopt)))))); highVal = 2+str2num(char(round(max(abs(xopt)))));
     [hor,ver] = meshgrid(lowVal:.15:highVal);
     surface = fx(hor,ver);
     fig = surfc(hor,ver,surface);
     plot3(steps(:,1),steps(:,2),fx(steps(:,1),steps(:,2)),'r*-');
-%     fig = contour(hor,ver,surface);
-    
-%     hold on;
     initial = plot3(x0(:,1),x0(:,2), vpa(subs(fx,[x1,x2],x0)),'o','MarkerSize',15,'MarkerEdgeColor','k','MarkerFaceColor',[.2 1 .5], 'DisplayName',['$x_0$ = [' num2str(x0) ']']);
     optimum = plot3(xopt(:,1),xopt(:,2), vpa(subs(fx,[x1,x2],xopt)),'o','MarkerSize',15,'MarkerEdgeColor','k','MarkerFaceColor',[.5 .9 1], 'DisplayName',['$\hat{x}$ = [' a ' ' b ']']);
     colorbar;
